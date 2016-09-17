@@ -1,0 +1,307 @@
+@charset "UTF-8";
+
+@import "common/base.css";
+
+/*-------------------------------------------------------------------------
+	All
+/*-----------------------------------------------------------------------*/
+html {
+	min-height: 100%;
+	background: linear-gradient(#2979ff,#ec569d);
+	font-size: 16px;
+}
+
+@media screen and (max-width: 640px) {
+
+	html {
+		font-size: 12px;
+	}
+
+}
+
+#all {
+	padding: 2%;
+}
+
+/*-------------------------------------------------------------------------
+	Header
+/*-----------------------------------------------------------------------*/
+#header {
+	margin: 2rem 0 3rem 0;
+}
+
+	#header h1 {
+		width: 200px;
+		margin: 5rem auto 0 auto;
+		color: #ff2967;
+		text-align: center;
+	}
+
+		#header h1 img {
+			position: relative;
+			left: 10px;
+			width: 100%;
+		}
+
+/*-------------------------------------------------------------------------
+	Login
+/*-----------------------------------------------------------------------*/
+#login {
+	margin-bottom: 5rem;
+	text-align: center;
+}
+
+	#login p {
+		margin: 0 auto 2rem auto;
+		color: #fff;
+		font-size: 1.4rem;
+	}
+
+	#login button {
+		width: 50%;
+		padding: 1rem;
+		border: 1px solid #fff;
+		border-radius: 5px;
+		background: transparent url(../img/facebook.png) no-repeat 2rem center;
+		background-size: 1rem;
+		color: #fff;
+		font-size: 1.2rem;
+		cursor: pointer;
+	}
+
+	#login button:hover {
+		background-color: #65d6d8;
+	}
+
+@media screen and (max-width: 640px) {
+
+	#login p,
+	#login button {
+		width: 90%;
+	}
+
+	#login p {
+		font-size: 1rem;
+	}
+
+}
+
+/*-------------------------------------------------------------------------
+	Main
+/*-----------------------------------------------------------------------*/
+#main {
+	display: none;
+	min-height: 300px;
+	padding: 2% 2% 0 2%;
+	background: rgba(255,255,255,.6);
+}
+
+	#main h2 {
+		position: relative;
+		margin-bottom: 2%;
+		border-bottom: 2px solid #000;
+	}
+
+		#main h2 em {
+			font-size: 1.6rem;
+		}
+
+		#main h2 span {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			padding: 2px 8px;
+			background: #ff2967;
+			color: #fff;
+			font-size: .8rem;
+		}
+
+	#movies {
+		width: 100%;
+	}
+
+		#movies .movie {
+			position: relative;
+			float: left;
+			width: 45%;
+			margin-bottom: 2%;
+			padding: 2%;
+			box-shadow: 0 1px 3px rgba(0,0,0,.2);
+			background: #fff;
+		}
+
+		#movies .movie:nth-child(even) {
+			float: right;
+		}
+
+			#movies .movie .frame {
+				overflow: hidden;
+				position: relative;
+				height: 300px;
+				margin-bottom: 1rem;
+				background: #000 url(../img/loading.gif) no-repeat center center;
+				text-align: center;
+				cursor: pointer;
+			}
+
+				#movies .movie .frame .video {
+					position: relative;
+				}
+
+				#movies .movie .frame .button {
+					position: absolute;
+					left: 50%;
+					top: 50%;
+					z-index: 100;
+				}
+
+					#movies .movie .frame .button button {
+						opacity: 0;
+						border: none;
+						border-radius: 50%;
+						background: #ff2967;
+						color: #fff;
+						font-size: 1.6rem;	
+					}
+
+					#movies .movie .frame:hover .button button {
+						opacity: 1 !important;
+					}
+
+			#movies .movie .info {
+				position: relative;
+				margin-bottom: 1rem;
+			}
+
+				#movies .movie .info .name {
+					padding: .5rem 0 .5rem 2rem;
+					background: url(../img/icon.png) no-repeat left center;
+					background-size: 1.4rem;
+				}
+
+					#movies .movie .info .name span {
+						display: block;
+						max-width: 85%;
+						height: 1rem;
+						line-height: 1;
+					}
+
+				#movies .movie .info .author {
+					position: absolute;
+					right: 0;
+					bottom: .5rem;
+					color: #9fa7ae;
+					font-size: .7rem;
+				}
+
+					#movies .movie .info .author span {
+						margin-left: .5rem;
+					}
+
+			#movies .movie .update,
+			#movies .movie .view {
+				float: left;
+				margin-bottom: 1rem;
+				font-size: .8rem;
+				line-height: 1rem;
+			}
+
+				#movies .movie .update em,
+				#movies .movie .view em {
+					margin-right: .5rem;
+					padding: .3rem .5rem;
+					border-radius: 3px;
+					color: #fff;
+					font-size: .7rem;
+				}
+
+			#movies .movie .update {
+				margin-right: 2rem;
+				color: #65d6d8;
+			}
+
+				#movies .movie .update em {
+					background: #65d6d8;
+				}
+
+			#movies .movie .view {
+				color: #ff2967;
+			}
+
+				#movies .movie .view em {
+					background: #ff2967;
+				}
+
+				#movies .movie .view span {
+					font-weight: bold;
+				}
+
+			#movies .movie .comment {
+				overflow: scroll;
+				clear: both;
+				height: 4rem;
+				margin-bottom: 2%;
+				padding: 1%;
+				background: #f8f8f8;
+				font-size: .8rem;
+			}
+
+				#movies .movie .comment li {
+					margin: 0 2%;
+					padding: 1% 0;
+					border-bottom: 1px dotted #aaa;
+				}
+
+				#movies .movie .comment li:last-child {
+					border-bottom: 0;
+				}
+
+			#movies .movie .message {
+				clear: both;
+				position: relative;
+			}
+
+				#movies .movie .message input,
+				#movies .movie .message button {
+					font-size: .8rem;
+				}
+
+				#movies .movie .message input {
+					float: left;
+					width: 100%;
+					padding: 2% 0;
+					border: none;
+					background: #fff;
+				}
+
+				#movies .movie .message span {
+					position: absolute;
+					right: 0;
+					top: 0;
+					border-left: .5rem solid #fff;
+					background: #fff;
+				}
+
+					#movies .movie .message span button {
+						display: inline-block;
+						padding: 6px 10px;
+						border: none;
+						border-radius: 3px;
+						background: #aaa;
+						color: #fff;
+					}
+
+					#movies .movie .message span button.ready {
+						background-color: #2979ff;
+						cursor: pointer;
+					}
+
+@media screen and (max-width: 640px) {
+
+	#movies .movie {
+		float: none !important;
+		width: 96%;
+		margin-bottom: 2rem;
+	}
+
+}
