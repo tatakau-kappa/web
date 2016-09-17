@@ -101,14 +101,53 @@
 	
 	function Login(_$parent) {
 		
+		var _fbID,_fbToken;
+		
 		(function() {
 			
-			_$parent.find('button').on('click',onClick);
+			window.fbAsyncInit = function() {
+				
+				FB.init({
+					
+					appId   : '1811015185777807',
+					cookie  : true,
+					xfbml   : true,
+					version : 'v2.6'
+					
+				});
+				
+				FB.getLoginStatus(function(response) {
+					
+					statusChangeCallback(response);
+					return;
+				
+				});
+				
+				return;
+				
+			}
+
+			window.checkLoginState = function() {
+				FB.getLoginStatus(statusChangeCallback);
+			}
+
+			function statusChangeCallback(response) {
+				
+			    if (response.status === 'connected') {
+
+					var auth = response.authResponse;
+					ajax(auth.userID,auth.accessToken);
+
+
+			    }
+			 
+			}
+			
 			return;
 			
 		})();
 		
-		function onClick() {
+		function ajax(id,token) {
 			
 			$.ajax({
 				
@@ -117,9 +156,9 @@
 				dataType : 'json',
 				data     : {
 					
-					"id"          : "kenta.sakata.7",
+					"id"          : id,
 					"provider"    : "facebook",
-					"access_token": "EAAB373YsZCXcBADncxDVOgyZCZAa9ZAS0GHUe1MhGDcFGKo3Pkjl0ZCiZCuQjzYVoErgImPkVElX3qhWMzOWqg4ZAXNDu9aohVeEZASyBGTc3hAPiSSqDazNKHZC2uH6ZBMCnZCVrSkFYt12kmliQKMZAf4otFm8DZBpZC9gEZBNZAq2IvPRxQZDZD"
+					"access_token": token
 					
 				},
 				success : onSuccess,
@@ -164,7 +203,7 @@
 			
 			setInterval(function() {
 
-				//load();
+				load();
 				return;
 
 			},3000);
@@ -228,8 +267,6 @@
 		}
 		
 		function getCellHTML(data) {
-			
-			trace(data)
 			
 			var html     = '';
 			var resource = data.resource
