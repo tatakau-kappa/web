@@ -1,5 +1,93 @@
 (function(window,$) {
 	
+	var _fbID,_fbToken;
+	
+	(function() {
+		
+		window.fbAsyncInit = function() {
+			
+			FB.init({
+				
+				appId   : '1811015185777807',
+				cookie  : true,
+				xfbml   : true,
+				version : 'v2.6'
+				
+			});
+			
+			FB.getLoginStatus(function(response) {
+				
+				statusChangeCallback(response);
+				return;
+			
+			});
+			
+			return;
+			
+		}
+
+		window.checkLoginState = function() {
+			FB.getLoginStatus(statusChangeCallback);
+		}
+
+		function statusChangeCallback(response) {
+			
+		    if (response.status === 'connected') {
+
+				var auth = response.authResponse;
+				ajax(auth.userID,auth.accessToken);
+
+		    }
+		
+			return;
+			
+		}
+		
+		function ajax(id,token) {
+			
+			$.ajax({
+				
+				type     : 'POST',
+				url      : 'https://tvar.claudetech.com/login',
+				dataType : 'json',
+				data     : {
+					
+					"id"          : id,
+					"provider"    : "facebook",
+					"access_token": token
+					
+				},
+				success : onSuccess,
+				error   : onError
+
+			});
+			
+			function onSuccess(data) {
+				
+				_token = data.access_token;
+				
+				$('#login').fadeOut(300);
+				$(window).trigger('login');
+				
+				return;
+				
+			}
+			
+			function onError() {
+				
+				trace('onError');
+				return;
+				
+			}
+			
+			return;
+			
+		}
+		
+		return;
+		
+	})();
+	
 	var _$win;
 	var _movies,_token,_pauseAll;
 
@@ -22,8 +110,6 @@
 			keydown  : onKeydown
 			
 		});
-		
-		new Login($all.find('#login'));
 		
 		function pauseAll() {
 			
@@ -98,99 +184,6 @@
 		return;
 
 	});
-	
-	function Login(_$parent) {
-		
-		var _fbID,_fbToken;
-		
-		(function() {
-			
-			window.fbAsyncInit = function() {
-				
-				FB.init({
-					
-					appId   : '1811015185777807',
-					cookie  : true,
-					xfbml   : true,
-					version : 'v2.6'
-					
-				});
-				
-				FB.getLoginStatus(function(response) {
-					
-					statusChangeCallback(response);
-					return;
-				
-				});
-				
-				return;
-				
-			}
-
-			window.checkLoginState = function() {
-				FB.getLoginStatus(statusChangeCallback);
-			}
-
-			function statusChangeCallback(response) {
-				
-			    if (response.status === 'connected') {
-
-					var auth = response.authResponse;
-					ajax(auth.userID,auth.accessToken);
-
-
-			    }
-			 
-			}
-			
-			return;
-			
-		})();
-		
-		function ajax(id,token) {
-			
-			$.ajax({
-				
-				type     : 'POST',
-				url      : 'https://tvar.claudetech.com/login',
-				dataType : 'json',
-				data     : {
-					
-					"id"          : id,
-					"provider"    : "facebook",
-					"access_token": token
-					
-				},
-				success : onSuccess,
-				error   : onError
-
-			});
-			
-			function onSuccess(data) {
-				
-				_token = data.access_token;
-				
-				_$parent.fadeOut(300);
-				_$win.trigger('login');
-				
-				return;
-				
-			}
-			
-			function onError() {
-				
-				trace('onError');
-				return;
-				
-			}
-			
-			return;
-			
-		}
-		
-		return {};
-		
-	}
 	
 	function Ajax(_$parent) {
 		
