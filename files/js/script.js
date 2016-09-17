@@ -225,8 +225,10 @@
 			
 			if (data.length == _length) return;
 			
+			var length = data.length - _length;
+			
 			_length = data.length;
-			setHTML(data,_length);
+			setHTML(data,length);
 			
 			_$win.trigger('ajaxload');
 			
@@ -242,18 +244,24 @@
 				html += getCellHTML(data[i]);
 			}
 			
-			_$parent.html(html).find('.video').css('opacity',0).each(function(index) {
+			var $videos = _$parent.prepend(html).find('.video').css('opacity',0);
+			
+			for (var i = 0; i < length; i++) {
 				
-				$(this).delay(200 * index).animate({ opacity:1 },400,function() {
+				$videos.eq(i).delay(200 * i).animate({ opacity:1 },400,function() {
 					
 					$(this).next('.button').trigger('ready');
+					
+					var element = $(this).get(0);
+					
+					element.setAttribute('controls','');
+					element.removeAttribute('controls');
+					
 					return;
 				
 				});
 				
-				return;
-				
-			});
+			}
 			
 			return;
 			
