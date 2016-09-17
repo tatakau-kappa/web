@@ -33,51 +33,10 @@
 		    if (response.status === 'connected') {
 
 				var auth = response.authResponse;
-				ajax(auth.userID,auth.accessToken);
+				_login(auth.userID,auth.accessToken);
 
 		    }
 		
-			return;
-			
-		}
-		
-		function ajax(id,token) {
-			
-			$.ajax({
-				
-				type     : 'POST',
-				url      : 'https://tvar.claudetech.com/login',
-				dataType : 'json',
-				data     : {
-					
-					"id"          : id,
-					"provider"    : "facebook",
-					"access_token": token
-					
-				},
-				success : onSuccess,
-				error   : onError
-
-			});
-			
-			function onSuccess(data) {
-				
-				_token = data.access_token;
-				
-				$('#login').fadeOut(300);
-				$(window).trigger('login');
-				
-				return;
-				
-			}
-			
-			function onError() {
-				
-				trace('onError');
-				return;
-				
-			}
-			
 			return;
 			
 		}
@@ -108,6 +67,8 @@
 			keydown  : onKeydown
 			
 		});
+		
+		_login = login;
 		
 		function pauseAll() {
 			
@@ -177,6 +138,47 @@
 
 			}
 
+		}
+		
+		function login(id,token) {
+			
+			$.ajax({
+				
+				type     : 'POST',
+				url      : 'https://tvar.claudetech.com/login',
+				dataType : 'json',
+				data     : {
+					
+					"id"          : id,
+					"provider"    : "facebook",
+					"access_token": token
+					
+				},
+				success : onSuccess,
+				error   : onError
+
+			});
+			
+			function onSuccess(data) {
+				
+				_token = data.access_token;
+				
+				$('#login').fadeOut(300);
+				_$win.trigger('login');
+				
+				return;
+				
+			}
+			
+			function onError() {
+				
+				trace('onError');
+				return;
+				
+			}
+			
+			return;
+			
 		}
 		
 		return;
