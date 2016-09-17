@@ -1,7 +1,5 @@
 (function(window,$) {
 	
-	var _fbID,_fbToken;
-	
 	(function() {
 		
 		window.fbAsyncInit = function() {
