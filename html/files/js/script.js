@@ -1,7 +1,7 @@
 (function(window,$) {
 	
 	var _$win;
-	var _movies,_pauseAll;
+	var _movies,_token,_pauseAll;
 
 	$(document).on('ready',function() {
 		
@@ -11,6 +11,7 @@
 		var $main = $all.find('#main');
 		
 		_movies   = [];
+		_token    = '';
 		_pauseAll = pauseAll;
 		
 		_$win.on({
@@ -38,21 +39,13 @@
 			
 			$all.find('#header').find('h1').animate({
 				
-				width     : 100,
+				width     : 60,
 				marginTop : 0
 				
 			},300,function() {
 				
 				$main.fadeIn(300);
-				
-				var ajax = new Ajax($main.find('#movies'));
-
-				setInterval(function() {
-
-					ajax.load();
-					return;
-
-				},500);
+				new Ajax($main.find('#movies'));
 				
 				return;
 				
@@ -117,8 +110,40 @@
 		
 		function onClick() {
 			
-			_$parent.fadeOut(300);
-			_$win.trigger('login');
+			$.ajax({
+				
+				type     : 'POST',
+				url      : 'https://tvar.claudetech.com/login',
+				dataType : 'json',
+				data     : {
+					
+					"id"          : "kenta.sakata.7",
+					"provider"    : "facebook",
+					"access_token": "EAAB373YsZCXcBADncxDVOgyZCZAa9ZAS0GHUe1MhGDcFGKo3Pkjl0ZCiZCuQjzYVoErgImPkVElX3qhWMzOWqg4ZAXNDu9aohVeEZASyBGTc3hAPiSSqDazNKHZC2uH6ZBMCnZCVrSkFYt12kmliQKMZAf4otFm8DZBpZC9gEZBNZAq2IvPRxQZDZD"
+					
+				},
+				success : onSuccess,
+				error   : onError
+
+			});
+			
+			function onSuccess(data) {
+				
+				_token = data.access_token;
+				
+				_$parent.fadeOut(300);
+				_$win.trigger('login');
+				
+				return;
+				
+			}
+			
+			function onError() {
+				
+				trace('onError');
+				return;
+				
+			}
 			
 			return;
 			
@@ -135,67 +160,30 @@
 		(function() {
 			
 			_length = 0;
+			load();
+			
+			setInterval(function() {
+
+				//load();
+				return;
+
+			},3000);
+			
 			return;
 			
 		})();
 		
-		function get() {
-			
-			$.ajax({
-
-				url : '',
-				data : {}
-
-			});
-			
-			return;
-			
-		}
-		
 		function load() {
 			
-			onSuccess(
-			[
-			  {
-			    "id": 29,
-			    "resource": {
-			      "original": "https://d2nfxe3r64iwve.cloudfront.net/fzu1fdWxQdcPeiUPCvaN.mp4",
-			      "swapped": "https://d2nfxe3r64iwve.cloudfront.net/Z-Qj7sz75b58TYd-Jjnk.mp4",
-			      "thumbnail": "https://d2nfxe3r64iwve.cloudfront.net/S31ugonE7CcVJCPwFtFg.jpg"
-			    },
-			    "program_name": "番組名",
-			    "view_count": 0,
-			    "video_comments": [
+			$.ajax({
+				
+				type       : 'GET',
+				url        : 'https://tvar.claudetech.com/videos',
+				dataType   : 'json',
+				beforeSend : function(xhr) { xhr.setRequestHeader('Authorization',_token); },
+				success    : onSuccess
 
-			    ]
-			  },
-			  {
-			    "id": 30,
-			    "resource": {
-			      "original": "https://d2nfxe3r64iwve.cloudfront.net/PVVwDdJSZMduAyAYTs4u.mp4",
-			      "swapped": "https://d2nfxe3r64iwve.cloudfront.net/eEBhXB7pWxnDGzA6-nra.mp4",
-			      "thumbnail": "https://d2nfxe3r64iwve.cloudfront.net/CssRiKn1eGecy8g7k6eH.jpg"
-			    },
-			    "program_name": "番組名",
-			    "view_count": 0,
-			    "video_comments": [
-
-			    ]
-			  },
-			  {
-			    "id": 31,
-			    "resource": {
-			      "original": "https://d2nfxe3r64iwve.cloudfront.net/evvepvfHxmc7XwJNxbiP.mp4",
-			      "swapped": "https://d2nfxe3r64iwve.cloudfront.net/DMWaAfz4QPvx_7yDExBA.mp4",
-			      "thumbnail": "https://d2nfxe3r64iwve.cloudfront.net/hMzLLZr7fzsspkbJx1R7.jpg"
-			    },
-			    "program_name": "番組名",
-			    "view_count": 0,
-			    "video_comments": [
-
-			    ]
-			  }
-			]);
+			});
 			
 			return;
 			
@@ -225,8 +213,13 @@
 			_$parent.html(html).find('.video').css('opacity',0).each(function(index) {
 				
 				$(this).delay(200 * index).animate({ opacity:1 },400,function() {
+					
 					$(this).next('.button').trigger('ready');
+					return;
+				
 				});
+				
+				return;
 				
 			});
 			
@@ -236,26 +229,25 @@
 		
 		function getCellHTML(data) {
 			
+			trace(data)
+			
 			var html     = '';
 			var resource = data.resource
 			var id       = data.id;
-			var url      = resource.original;
+			var swapped  = resource.swapped;
 			var name     = data.program_name;
 			var view     = data.view_count;
 			var comments = data.video_comments;
+			var author   = data.user.screen_name;
 			
-			url = 'https://d2nfxe3r64iwve.cloudfront.net/test/battlehack-video.mp4';
-			
-			html += '<li class="movie">';
+			html += '<li class="movie" data-id="' + id + '">';
 			html += '<figure class="frame">';
-			html += '<video class="video">';
-			html += '<source src="' + url + '">';
-			html += '</video>';
+			html += '<video class="video" src="' + swapped + '"></video>';
 			html += '<p class="button"><button>▶</button></p>';
 			html += '</figure>';
 			html += '<section class="info">';
 			html += '<p class="name"><span>' + name + '</span></p>';
-			html += '<p class="author">by<span>' + id + '</span></p>';
+			html += '<p class="author">by<span>' + author + '</span></p>';
 			html += '</section>';
 			html += '<p class="update"><em>Update</em><span>2016.09.17</span></p>';
 			html += '<p class="view"><em>View</em><span>' + view + '</span></p>';
@@ -277,10 +269,15 @@
 			var length = data.length;
 			if (length == 0) return '<li class="none">コメントはまだありません</li>';
 			
+			data.reverse();
+			
 			var html = '';
 			
 			for (var i = 0; i < data.length; i++) {
-				html += '<li>' + data[i] + '</li>';
+				
+				var info = data[i];
+				html += '<li>' + info.contents + '</li>';
+				
 			}
 			
 			return html;
@@ -471,8 +468,35 @@
 			if (_length == 0) return;
 			if (_$parent.find('.none').length > 0) _$parent.empty();
 			
-			_$parent.prepend('<li>' + _$input.prop('value') + '</li>').find('li:first-child').hide().slideDown(240);
+			var text = _$input.prop('value');
+			
+			_$parent.prepend('<li>' + text + '</li>').find('li:first-child').hide().slideDown(240);
 			_$input.prop('value','');
+			
+			$.ajax({
+				
+				type       : 'POST',
+				url        : 'https://tvar.claudetech.com/videos/' + _$parent.parents('.movie').data('id') + '/comments',
+				data       : { "contents":text },
+				beforeSend : function(xhr) { xhr.setRequestHeader('Authorization',_token); },
+				success    : onSuccess,
+				error      : onError
+
+			});
+			
+			function onSuccess() {
+				
+				trace('onSuccess');
+				
+			}
+			
+			function onError() {
+				
+				trace('onError');
+				
+			}
+			
+			return;
 			
 		}
 		

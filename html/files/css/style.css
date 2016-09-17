@@ -27,7 +27,7 @@ html {
 	Header
 /*-----------------------------------------------------------------------*/
 #header {
-	margin: 2rem 0 3rem 0;
+	margin: 1rem 0 2rem 0;
 }
 
 	#header h1 {
@@ -47,7 +47,7 @@ html {
 	Login
 /*-----------------------------------------------------------------------*/
 #login {
-	margin-bottom: 5rem;
+	margin: 5rem 0;
 	text-align: center;
 }
 
@@ -58,7 +58,7 @@ html {
 	}
 
 	#login button {
-		width: 50%;
+		width: 30%;
 		padding: 1rem;
 		border: 1px solid #fff;
 		border-radius: 5px;
@@ -66,6 +66,7 @@ html {
 		background-size: 1rem;
 		color: #fff;
 		font-size: 1.2rem;
+		text-indent: 1rem;
 		cursor: pointer;
 	}
 
