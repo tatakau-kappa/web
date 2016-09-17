@@ -164,7 +164,7 @@
 			
 			setInterval(function() {
 
-				load();
+				//load();
 				return;
 
 			},3000);
