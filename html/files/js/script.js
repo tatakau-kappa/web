@@ -164,7 +164,7 @@
 			
 			setInterval(function() {
 
-				//load();
+				load();
 				return;
 
 			},3000);
@@ -242,7 +242,7 @@
 			
 			html += '<li class="movie" data-id="' + id + '">';
 			html += '<figure class="frame">';
-			html += '<video class="video" src="' + swapped + '"></video>';
+			html += '<video class="video" src="' + swapped + '" loop></video>';
 			html += '<p class="button"><button>▶</button></p>';
 			html += '</figure>';
 			html += '<section class="info">';
