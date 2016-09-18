@@ -1,5 +1,7 @@
 (function(window,$) {
 
+	var BASE_URL = 'https://tvar.claudetech.com';
+
 	(function() {
 
 		window.fbAsyncInit = function() {
@@ -145,7 +147,7 @@
 			$.ajax({
 
 				type     : 'POST',
-				url      : 'https://tvar.claudetech.com/login',
+				url      : BASE_URL + '/login',
 				dataType : 'json',
 				data     : {
 
@@ -210,7 +212,7 @@
 			$.ajax({
 
 				type       : 'GET',
-				url        : 'https://tvar.claudetech.com/videos',
+				url        : BASE_URL + '/videos',
 				dataType   : 'json',
 				beforeSend : function(xhr) { xhr.setRequestHeader('Authorization',_token); },
 				success    : onSuccess
@@ -221,7 +223,13 @@
 
 		}
 
-		function onSuccess(data) {
+		function onSuccess(rawData) {
+			var data = [];
+			for (var i = 0; i < rawData.length; i++) {
+				if (rawData[i].resource && rawData[i].resource.thumbnail) {
+					data.push(rawData[i])
+				}
+			}
 
 			if (data.length == _length) return;
 
@@ -246,7 +254,6 @@
 			var $userInfo = $main.html(
 				'<div id="user-profile">' + $userIcon + '<p>ユーザー名</p><div class="mr-30 u-inline-block"><small>ポイント</small><p>1000</p></div><div class=" u-inline-block"><small>投稿動画数</small><p>30</p></div></div>'
 			);
-
 
 			for (var i = 0;i < length; i++) {
 				html += getCellHTML(data[i]);
@@ -522,7 +529,7 @@
 			$.ajax({
 
 				type       : 'POST',
-				url        : 'https://tvar.claudetech.com/videos/' + _$parent.parents('.movie').data('id') + '/comments',
+				url        : BASE_URL + '/videos/' + _$parent.parents('.movie').data('id') + '/comments',
 				data       : { "contents":text },
 				beforeSend : function(xhr) { xhr.setRequestHeader('Authorization',_token); },
 				success    : onSuccess,
@@ -582,5 +589,3 @@
 	return;
 
 })(window,jQuery);
-
-
