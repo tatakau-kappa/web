@@ -80,9 +80,22 @@
 		});
 
 		$('#enter-app').click(function () {
+			
 			$('#login').fadeOut(300);
-			$main.fadeIn(300);
-			new Ajax($main.find('#movies'));
+			
+			$all.find('#header').find('h1').animate({
+
+				width     : 60,
+				marginTop : 0
+
+			},300,function() {
+
+				$main.fadeIn(300);
+				new Ajax($main.find('#movies'));
+
+				return;
+
+			});
 		});
 
 		_login = login;
