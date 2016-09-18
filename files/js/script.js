@@ -1,6 +1,7 @@
 (function(window,$) {
 
-	var BASE_URL = 'https://tvar.claudetech.com';
+	// var BASE_URL = 'https://tvar.claudetech.com';
+	var BASE_URL = 'http://localhost:3000';
 
 	(function() {
 
@@ -76,6 +77,12 @@
 			resize   : onResize,
 			keydown  : onKeydown
 
+		});
+
+		$('#enter-app').click(function () {
+			$('#login').fadeOut(300);
+			$main.fadeIn(300);
+			new Ajax($main.find('#movies'));
 		});
 
 		_login = login;
@@ -334,10 +341,12 @@
 			html += '<ul class="comment">';
 			html += getCommentHTML(comments);
 			html += '</ul>';
-			html += '<p class="message">';
-			html += '<input type="text" placeholder="コメントを入力する…">';
-			html += '<span><button>投稿する</button></span>';
-			html += '</p>';
+			if (_token) {
+				html += '<p class="message">';
+				html += '<input type="text" placeholder="コメントを入力する…">';
+				html += '<span><button>投稿する</button></span>';
+				html += '</p>';
+			}
 			html += '</li>';
 
 			return html;
