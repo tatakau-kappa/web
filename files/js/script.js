@@ -166,6 +166,12 @@
 				_token = data.access_token;
 
 				$('#login').fadeOut(300);
+				
+				var $header = $('#header');
+				
+				$header.find('.button').hide();
+				$header.find('.profile').show();
+				
 				_$win.trigger('login');
 
 				return;
@@ -222,14 +228,16 @@
 			return;
 
 		}
-
+		
 		function showNotification(video) {
 			var options = {body: video.program_name + 'の新しい動画が追加されました', icon: 'files/img/icon-colored.png'}
 			new Notification('動画着信', options);
 		}
 
 		function onSuccess(rawData) {
+			
 			var data = [];
+			
 			for (var i = 0; i < rawData.length; i++) {
 				if (rawData[i].resource && rawData[i].resource.thumbnail) {
 					data.push(rawData[i])
@@ -237,7 +245,7 @@
 			}
 
 			if (data.length == _length) return;
-
+			
 			if (_length > 0) {
 				showNotification(data[0]);
 			}
@@ -256,13 +264,6 @@
 		function setHTML(data,length) {
 
 			var html = '';
-			var $main  = $('#all').find('#main');
-			// TODO: facebookのプロフィールに変更
-			var $userIcon = '<img src="https://www.gravatar.com/avatar/HASH" />'
-			// TODO: 一旦#mainの中身を上書きしてます。
-			var $userInfo = $main.html(
-				'<div id="user-profile">' + $userIcon + '<p>ユーザー名</p><div class="mr-30 u-inline-block"><small>ポイント</small><p>1000</p></div><div class=" u-inline-block"><small>投稿動画数</small><p>30</p></div></div>'
-			);
 
 			for (var i = 0;i < length; i++) {
 				html += getCellHTML(data[i]);
@@ -594,11 +595,6 @@
 		console.log(text);
 
 	}
-
-	if (!Notification) {
-		return;
-	}
-	Notification.requestPermission();
 
 	return;
 

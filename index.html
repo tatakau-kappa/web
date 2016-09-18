@@ -24,14 +24,27 @@ fjs.parentNode.insertBefore(js, fjs);
 	<section id="all">
 		<header id="header">
 			<h1><img src="files/img/logo.png"></h1>
+			<p class="profile">ユーザープロフィールへ</p>
+			<p class="login"><fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="button">Facebookでログイン</fb:login-button></p>
 		</header>
 		<section id="login">
 			<p>あのテレビドラマの主人公になれる？！<br>TVarで好きな番組の主役になってみよう！</p>
-			<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="button">Facebookでログイン</fb:login-button>
 		</section>
 		<section id="main">
 			<h2><em>最新動画</em><span>New Movies</span></h2>
 			<ul id="movies"></ul>
+		</section>
+		<section id="profile">
+			<div class="wrap">
+				<p class="icon"><img src="https://www.gravatar.com/avatar/HASH"></p>
+				<p class="name">ユーザー名</p>
+			</div>
+			<div class="mr-30 u-inline-block">
+				<small>ポイント</small><p>1000</p>
+			</div>
+			<div class=" u-inline-block">
+				<small>投稿動画数</small><p>30</p>
+			</div>
 		</section>
 	</section>
 
