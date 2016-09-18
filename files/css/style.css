@@ -258,7 +258,6 @@ html {
 				}
 
 			#movies .movie .comment {
-				overflow: scroll;
 				clear: both;
 				height: 4rem;
 				margin-bottom: 2%;

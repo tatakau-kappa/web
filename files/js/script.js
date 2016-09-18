@@ -55,7 +55,7 @@
 	})();
 
 	var _$win;
-	var _movies,_profile,_token,_pauseAll;
+	var _movies,_profile,_token,_userOriginalID,_pauseAll;
 
 	$(document).on('ready',function() {
 
@@ -171,7 +171,8 @@
 
 			function onSuccess(data) {
 
-				_token = data.access_token;
+				_token          = data.access_token;
+				_userOriginalID = data.id;
 
 				$('#login').fadeOut(300);
 
@@ -305,6 +306,8 @@
 		}
 
 		function getCellHTML(data) {
+			
+			trace(data)
 
 			var html     = '';
 			var resource = data.resource
@@ -621,8 +624,29 @@
 		}
 
 		function show() {
+			
+			$.ajax({
+
+				type       : 'GET',
+				url        : BASE_URL + '/points',
+				dataType   : 'json',
+				beforeSend : function(xhr) { xhr.setRequestHeader('Authorization',_token); },
+				success    : function(data) { _$parent.find('.point').find('dd').text(data.point) }
+
+			});
+			
+			$.ajax({
+
+				type       : 'GET',
+				url        : BASE_URL + '/users/' + _userOriginalID + '/videos',
+				dataType   : 'json',
+				beforeSend : function(xhr) { xhr.setRequestHeader('Authorization',_token); },
+				success    : function(data) { _$parent.find('.length').find('dd').text(data.length) }
+
+			});
 
 			_$parent.stop().fadeIn(300);
+			
 			return;
 
 		}
