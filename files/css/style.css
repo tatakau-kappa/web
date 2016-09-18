@@ -257,6 +257,17 @@ html {
 					font-weight: bold;
 				}
 
+			#movies .movie .credit {
+				position: absolute;
+				right: 2px;
+				top: 2px;
+				padding: .3rem .5rem;
+				background: #ff2967;
+				color: #fff;
+				font-size: .7rem;
+				cursor: pointer;
+			}
+
 			#movies .movie .comment {
 				clear: both;
 				height: 4rem;

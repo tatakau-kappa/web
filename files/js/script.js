@@ -319,6 +319,8 @@
 			var view     = data.view_count;
 			var comments = data.video_comments;
 			var author   = data.user.screen_name;
+			
+			var isMine = (author == _screenName);
 
 			html += '<li class="movie" data-id="' + id + '">';
 			html += '<figure class="frame">';
@@ -331,6 +333,7 @@
 			html += '</section>';
 			html += '<p class="update"><em>Update</em><span>2016.09.17</span></p>';
 			html += '<p class="view"><em>View</em><span>' + view + '</span></p>';
+			if (isMine) html += '<p class="credit">クレジットを消す</p>';
 			html += '<ul class="comment">';
 			html += getCommentHTML(comments);
 			html += '</ul>';
