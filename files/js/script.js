@@ -1,27 +1,27 @@
 (function(window,$) {
-	
+
 	(function() {
-		
+
 		window.fbAsyncInit = function() {
-			
+
 			FB.init({
-				
+
 				appId   : '1811015185777807',
 				cookie  : true,
 				xfbml   : true,
 				version : 'v2.6'
-				
+
 			});
-			
+
 			FB.getLoginStatus(function(response) {
-				
+
 				statusChangeCallback(response);
 				return;
-			
+
 			});
-			
+
 			return;
-			
+
 		}
 
 		window.checkLoginState = function() {
@@ -29,101 +29,101 @@
 		}
 
 		function statusChangeCallback(response) {
-			
+
 		    if (response.status === 'connected') {
 
 				var auth = response.authResponse;
 				_login(auth.userID,auth.accessToken);
 
 		    }
-		
+
 			return;
-			
+
 		}
-		
+
 		return;
-		
+
 	})();
-	
+
 	var _$win;
 	var _movies,_token,_pauseAll;
 
 	$(document).on('ready',function() {
-		
+
 		_$win = $(window);
-		
+
 		var $all  = $('#all');
 		var $main = $all.find('#main');
-		
+
 		_movies   = [];
 		_token    = '';
 		_pauseAll = pauseAll;
-		
+
 		_$win.on({
-			
+
 			login    : onLogin,
 			ajaxload : onAjaxload,
 			resize   : onResize,
 			keydown  : onKeydown
-			
+
 		});
-		
+
 		_login = login;
-		
+
 		function pauseAll() {
-			
+
 			for (var i = 0; i < _movies.length; i++) {
 				_movies[i].pause();
 			}
-			
-			return;
-			
-		}
-		
-		function onLogin() {
-			
-			$all.find('#header').find('h1').animate({
-				
-				width     : 60,
-				marginTop : 0
-				
-			},300,function() {
-				
-				$main.fadeIn(300);
-				new Ajax($main.find('#movies'));
-				
-				return;
-				
-			});
-			
-			return;
-			
-		}
-		
-		function onAjaxload() {
-			
-			_movies = [];
-			
-			$main.find('.movie').each(function() {
-				_movies.push(new Movie($(this)));
-			});
-			
-			_$win.trigger('resize');
-			
-			return;
-			
-		}
-		
-		function onResize() {
-			
-			for (var i = 0; i < _movies.length; i++) {
-				_movies[i].resize();
-			}
-			
+
 			return;
 
 		}
-		
+
+		function onLogin() {
+
+			$all.find('#header').find('h1').animate({
+
+				width     : 60,
+				marginTop : 0
+
+			},300,function() {
+
+				$main.fadeIn(300);
+				new Ajax($main.find('#movies'));
+
+				return;
+
+			});
+
+			return;
+
+		}
+
+		function onAjaxload() {
+
+			_movies = [];
+
+			$main.find('.movie').each(function() {
+				_movies.push(new Movie($(this)));
+			});
+
+			_$win.trigger('resize');
+
+			return;
+
+		}
+
+		function onResize() {
+
+			for (var i = 0; i < _movies.length; i++) {
+				_movies[i].resize();
+			}
+
+			return;
+
+		}
+
 		function onKeydown(event) {
 
 			switch (event.keyCode) {
@@ -139,76 +139,76 @@
 			}
 
 		}
-		
+
 		function login(id,token) {
-			
+
 			$.ajax({
-				
+
 				type     : 'POST',
 				url      : 'https://tvar.claudetech.com/login',
 				dataType : 'json',
 				data     : {
-					
+
 					"id"          : id,
 					"provider"    : "facebook",
 					"access_token": token
-					
+
 				},
 				success : onSuccess,
 				error   : onError
 
 			});
-			
+
 			function onSuccess(data) {
-				
+
 				_token = data.access_token;
-				
+
 				$('#login').fadeOut(300);
 				_$win.trigger('login');
-				
+
 				return;
-				
+
 			}
-			
+
 			function onError() {
-				
+
 				trace('onError');
 				return;
-				
+
 			}
-			
+
 			return;
-			
+
 		}
-		
+
 		return;
 
 	});
-	
+
 	function Ajax(_$parent) {
-		
+
 		var _length;
-		
+
 		(function() {
-			
+
 			_length = 0;
 			load();
-			
+
 			setInterval(function() {
 
 				load();
 				return;
 
 			},3000);
-			
+
 			return;
-			
+
 		})();
-		
+
 		function load() {
-			
+
 			$.ajax({
-				
+
 				type       : 'GET',
 				url        : 'https://tvar.claudetech.com/videos',
 				dataType   : 'json',
@@ -216,59 +216,67 @@
 				success    : onSuccess
 
 			});
-			
+
 			return;
-			
+
 		}
-		
+
 		function onSuccess(data) {
-			
+
 			if (data.length == _length) return;
-			
+
 			var length = data.length - _length;
-			
+
 			_length = data.length;
 			setHTML(data,length);
-			
+
 			_$win.trigger('ajaxload');
-			
+
 			return;
-			
+
 		}
-		
+
 		function setHTML(data,length) {
-			
+
 			var html = '';
-			
+			var $main  = $('#all').find('#main');
+			// TODO: facebookのプロフィールに変更
+			var $userIcon = '<img src="https://www.gravatar.com/avatar/HASH" />'
+			// TODO: 一旦#mainの中身を上書きしてます。
+			var $userInfo = $main.html(
+				'<div id="user-profile">' + $userIcon + '<p>ユーザー名</p><div class="mr-30 u-inline-block"><small>ポイント</small><p>1000</p></div><div class=" u-inline-block"><small>投稿動画数</small><p>30</p></div></div>'
+			);
+
+
 			for (var i = 0;i < length; i++) {
 				html += getCellHTML(data[i]);
 			}
-			
+
 			var $videos = _$parent.prepend(html).find('.video').css('opacity',0);
-			
+
 			for (var i = 0; i < length; i++) {
-				
+
 				$videos.eq(i).delay(200 * i).animate({ opacity:1 },400,function() {
-					
+
 					$(this).next('.button').trigger('ready');
-					
+
 					var element = $(this).get(0);
-					
+
 					element.setAttribute('controls','');
 					element.removeAttribute('controls');
-					
+
 					return;
-				
+
 				});
-				
+
 			}
-			
+
 			return;
-			
+
 		}
-		
+
 		function getCellHTML(data) {
-			
+
 			var html     = '';
 			var resource = data.resource
 			var id       = data.id;
@@ -277,7 +285,7 @@
 			var view     = data.view_count;
 			var comments = data.video_comments;
 			var author   = data.user.screen_name;
-			
+
 			html += '<li class="movie" data-id="' + id + '">';
 			html += '<figure class="frame">';
 			html += '<video class="video" src="' + swapped + '" loop></video>';
@@ -297,222 +305,222 @@
 			html += '<span><button>投稿する</button></span>';
 			html += '</p>';
 			html += '</li>';
-			
+
 			return html;
-			
+
 		}
-		
+
 		function getCommentHTML(data) {
 
 			var length = data.length;
 			if (length == 0) return '<li class="none">コメントはまだありません</li>';
-			
+
 			data.reverse();
-			
+
 			var html = '';
-			
+
 			for (var i = 0; i < data.length; i++) {
-				
+
 				var info = data[i];
 				html += '<li>' + info.contents + '</li>';
-				
+
 			}
-			
+
 			return html;
-			
+
 		}
-		
+
 		return { load:load };
-		
+
 	}
-	
+
 	function Movie(_$parent) {
-		
+
 		var _$frame,_$video,_$button;
 		var _video,_button,_comment,_isPlaying;
-		
+
 		(function() {
-			
+
 			_$frame  = _$parent.find('.frame');
 			_$video  = _$frame.find('.video');
 			_$button = _$frame.find('.button');
-			
+
 			_video     = new Video(_$video);
 			_button    = new Button(_$button);
 			_comment   = new Comment(_$parent.find('.comment'),_$parent.find('.message'));
 			_isPlaying = false;
-			
+
 			_$frame.off().on('click',onClick);
-			
+
 			return;
-			
+
 		})();
-		
+
 		function resize() {
-			
+
 			var videoW = _$video.width();
 			var videoH = _$video.height();
 			var frameW = _$frame.outerWidth();
 			var frameH = _$frame.outerHeight();
 			var ratio  = videoH / videoW;
-			
+
 			videoH = frameW * ratio;
-			
+
 			var top = (frameH - videoH) * .5;
 			_$video.css({ top:top, width:frameW, height:videoH });
-			
+
 			return;
-			
+
 		}
-		
+
 		function onClick() {
-			
+
 			if (_isPlaying) pause();
 			else play();
-			
+
 			return;
-			
+
 		}
-		
+
 		function play() {
-			
+
 			_pauseAll();
-			
+
 			_isPlaying = true;
-			
+
 			_button.hide();
 			_video.play();
-			
+
 			return;
-			
+
 		}
-		
+
 		function pause() {
-			
+
 			_isPlaying = false;
-			
+
 			_button.show();
 			_video.pause();
-			
+
 			return;
-			
+
 		}
-		
+
 		return { resize:resize, pause:pause };
-		
+
 	}
-	
+
 	function Video(_$target) {
-		
+
 		var _element;
-		
+
 		(function() {
-			
+
 			_element   = _$target.get(0);
 			_isPlaying = false;
-			
+
 			return;
-			
+
 		})();
-		
+
 		function play() {
-			
+
 			_element.play();
 			return;
-			
+
 		}
-		
+
 		function pause() {
-			
+
 			_element.pause();
 			return;
-			
+
 		}
-		
+
 		return { play:play, pause:pause };
-		
+
 	}
-	
+
 	function Button(_$parent) {
-		
+
 		var _$target;
-		
+
 		(function() {
-			
+
 			_$target = _$parent.find('button');
-			
+
 			hide();
 			_$parent.on('ready',show);
-			
+
 			return;
-			
+
 		})();
-		
+
 		function show() {
-			
+
 			setSize(.9,80,'linear');
 			return;
-			
+
 		}
-		
+
 		function hide() {
-			
+
 			setSize(0,0,'easeInBack');
 			return;
-			
+
 		}
-		
+
 		function setSize(opacity,size,easing) {
-			
+
 			var margin = size * -.5;
-			
+
 			_$target.stop().animate({
-				
+
 				opacity    : opacity,
 				marginTop  : margin,
 				marginLeft : margin,
 				width      : size,
 				height     : size
-				
+
 			},200,easing);
-			
+
 			return;
-			
+
 		}
-		
+
 		return { show:show, hide:hide };
-		
+
 	}
-	
+
 	function Comment(_$parent,_$message) {
-		
+
 		var _$input,_$button;
 		var _length;
-		
+
 		(function() {
-			
+
 			_$input  = _$message.find('input').on('keydown',onKeydown);
 			_$button = _$message.find('button').on('click',submit);
 			_length  = 0;
-			
+
 			setInterval(onLoop,100);
-			
+
 			return;
-			
+
 		})();
-		
+
 		function submit() {
-			
+
 			if (_length == 0) return;
 			if (_$parent.find('.none').length > 0) _$parent.empty();
-			
+
 			var text = _$input.prop('value');
-			
+
 			_$parent.prepend('<li>' + text + '</li>').find('li:first-child').hide().slideDown(240);
 			_$input.prop('value','');
-			
+
 			$.ajax({
-				
+
 				type       : 'POST',
 				url        : 'https://tvar.claudetech.com/videos/' + _$parent.parents('.movie').data('id') + '/comments',
 				data       : { "contents":text },
@@ -521,59 +529,58 @@
 				error      : onError
 
 			});
-			
+
 			function onSuccess() {
-				
+
 				trace('onSuccess');
-				
+
 			}
-			
+
 			function onError() {
-				
+
 				trace('onError');
-				
+
 			}
-			
+
 			return;
-			
+
 		}
-		
+
 		function onKeydown(event) {
-			
+
 			if (event.keyCode == 13) {
-				
+
 				submit();
 				return false;
-				
+
 			}
 
 		}
-		
+
 		function onLoop() {
-			
+
 			if (_length == _$input.prop('value')) return;
 			_length = _$input.prop('value').length;
-			
+
 			if (_length > 0) _$button.addClass('ready');
 			else _$button.removeClass('ready');
-			
+
 			return;
-			
+
 		}
-		
+
 		return {};
-		
+
 	}
-	
+
 	function trace(text) {
-		
+
 		console.log(text);
-		
+
 	}
-	
+
 	return;
 
 })(window,jQuery);
 
-    
- 
+
