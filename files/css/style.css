@@ -81,12 +81,16 @@ html {
 		padding: 1rem;
 		border: 1px solid #fff;
 		border-radius: 5px;
-		background: transparent url(../img/facebook.png) no-repeat 2rem center;
 		background-size: 1rem;
+		background: transparent;
 		color: #fff;
 		font-size: 1.2rem;
 		text-indent: 1rem;
 		cursor: pointer;
+	}
+
+	#login button.facebook {
+		background: transparent url(../img/facebook.png) no-repeat 2rem center;
 	}
 
 	#login button:hover {
@@ -350,7 +354,7 @@ html {
 	background: rgba(0,0,0,.9);
 	z-index: 1000;
 }
-	
+
 	#profile .wrap {
 		position: fixed;
 		left: 50%;
