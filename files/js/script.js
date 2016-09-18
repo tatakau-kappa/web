@@ -321,8 +321,6 @@
 
 				});
 
-				$videos.eq(0).find('.button').trigger('click');
-
 			}
 
 			return;
@@ -410,6 +408,13 @@
 			_isPlaying = false;
 
 			_$frame.off().on('click',onClick);
+			
+			_$parent.find('.credit').off().on('click',function() {
+				
+				killCredit($(this),$(this).parents('.movie').data('id'));
+				return;
+				
+			});
 
 			return;
 
@@ -463,6 +468,23 @@
 
 			return;
 
+		}
+		
+		function killCredit($button,id) {
+			
+			$.ajax({
+
+				type       : 'GET',
+				url        : BASE_URL + '/videos/' + id + '/remove_ad',
+				dataType   : 'json',
+				beforeSend : function(xhr) { xhr.setRequestHeader('Authorization',_token); },
+				success    : function(data) { $button.hide(); alert('削除手続きが完了いたしました'); },
+				error      : function() { alert('ポイントが足りません'); }
+
+			});
+			
+			return;
+			
 		}
 
 		return { resize:resize, pause:pause };
