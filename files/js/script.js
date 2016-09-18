@@ -55,7 +55,7 @@
 	})();
 
 	var _$win;
-	var _movies,_profile,_token,_userOriginalID,_pauseAll;
+	var _movies,_profile,_token,_userOriginalID,_screenName,_pauseAll;
 
 	$(document).on('ready',function() {
 
@@ -173,6 +173,7 @@
 
 				_token          = data.access_token;
 				_userOriginalID = data.id;
+				_screenName     = data.screen_name;
 
 				$('#login').fadeOut(300);
 
@@ -306,8 +307,6 @@
 		}
 
 		function getCellHTML(data) {
-			
-			trace(data)
 
 			var html     = '';
 			var resource = data.resource
@@ -354,7 +353,7 @@
 			for (var i = 0; i < data.length; i++) {
 
 				var info = data[i];
-				html += '<li>' + info.contents + '</li>';
+				html += '<li>' + info.user.screen_name + ' : ' + info.contents + '</li>';
 
 			}
 
@@ -548,7 +547,7 @@
 
 			var text = _$input.prop('value');
 
-			_$parent.prepend('<li>' + text + '</li>').find('li:first-child').hide().slideDown(240);
+			_$parent.prepend('<li>' + _screenName + ' : ' + text + '</li>').find('li:first-child').hide().slideDown(240);
 			_$input.prop('value','');
 
 			$.ajax({
