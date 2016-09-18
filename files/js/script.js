@@ -295,6 +295,8 @@
 					return;
 
 				});
+				
+				$videos.eq(0).find('.button').trigger('click');
 
 			}
 
