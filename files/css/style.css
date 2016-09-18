@@ -95,6 +95,7 @@ html {
 	min-height: 300px;
 	padding: 2% 2% 0 2%;
 	background: rgba(255,255,255,.6);
+	border-radius: 5px;
 }
 
 	#main h2 {
@@ -115,6 +116,21 @@ html {
 			background: #ff2967;
 			color: #fff;
 			font-size: .8rem;
+		}
+
+	#user-profile {
+		text-align: center;
+		margin-top: 30px;
+	}
+	
+		#user-profile img {
+			border-radius: 50%;
+		}
+
+		#user-profile p {
+			font-size: 1rem;
+			margin-top: 10px;
+			margin-bottom: 30px;
 		}
 
 	#movies {
@@ -162,7 +178,7 @@ html {
 						border-radius: 50%;
 						background: #ff2967;
 						color: #fff;
-						font-size: 1.6rem;	
+						font-size: 1.6rem;
 					}
 
 					#movies .movie .frame:hover .button button {
@@ -296,6 +312,18 @@ html {
 						background-color: #2979ff;
 						cursor: pointer;
 					}
+
+
+/*-------------------------------------------------------------------------
+	Utility
+/*-----------------------------------------------------------------------*/
+.u-inline-block {
+	display: inline-block;
+}
+
+.mr-30 {
+	margin-right: 30px;
+}
 
 @media screen and (max-width: 640px) {
 
