@@ -476,10 +476,9 @@
 
 				type       : 'POST',
 				url        : BASE_URL + '/videos/' + id + '/remove_ad',
-				dataType   : 'json',
 				beforeSend : function(xhr) { xhr.setRequestHeader('Authorization',_token); },
 				success    : function(data) { $button.hide(); alert('削除手続きが完了いたしました'); },
-				error      : function() { alert('ポイントが足りません'); }
+				error      : function(a,b,c) { alert('ポイントが足りません'); trace([a,b,c]); }
 
 			});
 			
