@@ -36,12 +36,12 @@
 
 				var auth = response.authResponse;
 				_login(auth.userID,auth.accessToken);
-				
+
 				FB.api('/me',function(response) {
-					
+
 					_profile.set(auth.userID,response.name);
 					return;
-					
+
 				});
 
 		    }
@@ -174,12 +174,12 @@
 				_token = data.access_token;
 
 				$('#login').fadeOut(300);
-				
+
 				var $header = $('#header');
-				
+
 				$header.find('.button').hide();
 				$header.find('.profile').show().on('click',_profile.show);
-				
+
 				_$win.trigger('login');
 
 				return;
@@ -236,18 +236,18 @@
 			return;
 
 		}
-		
+
 		function showNotification(video) {
-			
+
 			var options = {body: video.program_name + 'の新しい動画が追加されました', icon: 'files/img/icon-colored.png'}
 			new Notification('動画着信', options);
-		
+
 		}
 
 		function onSuccess(rawData) {
-			
+
 			var data = [];
-			
+
 			for (var i = 0; i < rawData.length; i++) {
 				if (rawData[i].resource && rawData[i].resource.thumbnail) {
 					data.push(rawData[i])
@@ -255,7 +255,7 @@
 			}
 
 			if (data.length == _length) return;
-			
+
 			if (_length > 0) {
 				showNotification(data[0]);
 			}
@@ -599,48 +599,53 @@
 		return {};
 
 	}
-	
+
 	function Profile(_$parent) {
-		
+
 		(function() {
-			
+
 			_$parent.on('click',hide);
 			return;
-			
+
 		})();
-		
+
 		function set(userID,userName) {
-			
+
 			_$parent.find('.icon').html('<img src="https://graph.facebook.com/' + userID + '/picture?type=normal">');
 			_$parent.find('.name').text(userName);
-			
+
 			return;
-			
+
 		}
-		
+
 		function show() {
-			
+
 			_$parent.stop().fadeIn(300);
 			return;
-			
+
 		}
-		
+
 		function hide() {
-			
+
 			_$parent.stop().fadeOut(300);
 			return;
-			
+
 		}
-		
+
 		return { set:set, show:show };
-		
+
 	}
-	
+
 	function trace(text) {
 
 		console.log(text);
 
 	}
+
+	if (!Notification) {
+		return;
+	}
+	Notification.requestPermission();
 
 	return;
 
