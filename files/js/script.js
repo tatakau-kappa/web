@@ -240,10 +240,13 @@
 		}
 
 		function showNotification(video) {
-
 			var options = {body: video.program_name + 'の新しい動画が追加されました', icon: 'files/img/icon-colored.png'}
-			new Notification('動画着信', options);
-
+			var notification = new Notification('動画着信', options);
+			notification.onclick = function (e) {
+				e.preventDefault();
+				window.open(BASE_URL + '/videos/' + video.id, '_blank');
+				notification.close();
+			}
 		}
 
 		function onSuccess(rawData) {
@@ -297,7 +300,7 @@
 					return;
 
 				});
-				
+
 				$videos.eq(0).find('.button').trigger('click');
 
 			}
@@ -623,7 +626,7 @@
 		}
 
 		function show() {
-			
+
 			$.ajax({
 
 				type       : 'GET',
@@ -633,7 +636,7 @@
 				success    : function(data) { _$parent.find('.point').find('dd').text(data.point) }
 
 			});
-			
+
 			$.ajax({
 
 				type       : 'GET',
@@ -645,7 +648,7 @@
 			});
 
 			_$parent.stop().fadeIn(300);
-			
+
 			return;
 
 		}
