@@ -36,6 +36,13 @@
 
 				var auth = response.authResponse;
 				_login(auth.userID,auth.accessToken);
+				
+				FB.api('/me',function(response) {
+					
+					_profile.set(auth.userID,response.name);
+					return;
+					
+				});
 
 		    }
 
@@ -48,7 +55,7 @@
 	})();
 
 	var _$win;
-	var _movies,_token,_pauseAll;
+	var _movies,_profile,_token,_pauseAll;
 
 	$(document).on('ready',function() {
 
@@ -58,6 +65,7 @@
 		var $main = $all.find('#main');
 
 		_movies   = [];
+		_profile  = new Profile($all.find('#profile'));
 		_token    = '';
 		_pauseAll = pauseAll;
 
@@ -170,7 +178,7 @@
 				var $header = $('#header');
 				
 				$header.find('.button').hide();
-				$header.find('.profile').show();
+				$header.find('.profile').show().on('click',_profile.show);
 				
 				_$win.trigger('login');
 
@@ -589,7 +597,43 @@
 		return {};
 
 	}
-
+	
+	function Profile(_$parent) {
+		
+		(function() {
+			
+			_$parent.on('click',hide);
+			return;
+			
+		})();
+		
+		function set(userID,userName) {
+			
+			_$parent.find('.icon').html('<img src="https://graph.facebook.com/' + userID + '/picture?type=normal">');
+			_$parent.find('.name').text(userName);
+			
+			return;
+			
+		}
+		
+		function show() {
+			
+			_$parent.stop().fadeIn(300);
+			return;
+			
+		}
+		
+		function hide() {
+			
+			_$parent.stop().fadeOut(300);
+			return;
+			
+		}
+		
+		return { set:set, show:show };
+		
+	}
+	
 	function trace(text) {
 
 		console.log(text);
