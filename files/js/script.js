@@ -474,7 +474,7 @@
 			
 			$.ajax({
 
-				type       : 'GET',
+				type       : 'POST',
 				url        : BASE_URL + '/videos/' + id + '/remove_ad',
 				dataType   : 'json',
 				beforeSend : function(xhr) { xhr.setRequestHeader('Authorization',_token); },
