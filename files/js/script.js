@@ -223,6 +223,11 @@
 
 		}
 
+		function showNotification(video) {
+			var options = {body: video.program_name + 'の新しい動画が追加されました', icon: 'files/img/icon-colored.png'}
+			new Notification('動画着信', options);
+		}
+
 		function onSuccess(rawData) {
 			var data = [];
 			for (var i = 0; i < rawData.length; i++) {
@@ -232,6 +237,10 @@
 			}
 
 			if (data.length == _length) return;
+
+			if (_length > 0) {
+				showNotification(data[0]);
+			}
 
 			var length = data.length - _length;
 
@@ -585,6 +594,11 @@
 		console.log(text);
 
 	}
+
+	if (!Notification) {
+		return;
+	}
+	Notification.requestPermission();
 
 	return;
 
