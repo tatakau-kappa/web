@@ -640,7 +640,7 @@
 
 		function onLoop() {
 
-			if (_length == _$input.prop('value')) return;
+			if (_$input.length == 0 || _length == _$input.prop('value')) return;
 			_length = _$input.prop('value').length;
 
 			if (_length > 0) _$button.addClass('ready');
